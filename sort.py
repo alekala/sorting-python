@@ -33,16 +33,15 @@ class Sort:
     '''
     def mergeSort(self):
         _sorted = self._sorted
+        # Luodaan lista, jossa `_sorted`
+        # määrä None elementtejä, jotta voidaan
+        # käyttää listaa kuin tavallisessa ohjelmoinnissa
         temp = [None] * len(self._sorted)
 
         def merge(a1, b1, a2, b2):
-            # Luodaan lista, jossa `_sorted`
-            # määrä None elementtejä, jotta voidaan
-            # käyttää listaa kuin tavallisessa ohjelmoinnissa
-            a = a1
-            b = b1
+            a, b = a1, b2
             for i in range(a, b):
-                if a2 > b2 or (a1 <= b1 and _sorted[a1] <= _sorted[a2]):
+                if (a2 > b2) or (a1 <= b1 and _sorted[a1] <= _sorted[a2]):
                     temp[i] = _sorted[a1]
                     a1 += 1
                 else:
@@ -54,14 +53,12 @@ class Sort:
         def sort(a, b):
             if a == b:
                 return
-            else:
-                x = int((a+b)/2)
-                sort(a, x)
-                sort(x+1, b)
-                merge(a, x, x+1, b)
+            x = int((a+b)/2)
+            sort(a, x)
+            sort(x+1, b)
+            merge(a, x, x+1, b)
         
         sort(0, len(_sorted)-1)
-
         return _sorted
     
     def printNums(self):
