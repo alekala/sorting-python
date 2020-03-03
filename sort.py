@@ -50,13 +50,13 @@ class Sort:
             for i in range(a, b):
                 _sorted[i] = temp[i]
 
-        def sort(a, b):
-            if a == b:
+        def sort(leftIndex, rightIndex):
+            if leftIndex == rightIndex:
                 return
-            x = int((a+b)/2)
-            sort(a, x)
-            sort(x+1, b)
-            merge(a, x, x+1, b)
+            x = (leftIndex+rightIndex)//2
+            sort(leftIndex, x)
+            sort(x+1, rightIndex)
+            merge(leftIndex, x, x+1, rightIndex)
         
         sort(0, len(_sorted)-1)
         return _sorted
