@@ -27,6 +27,43 @@ class Sort:
         self._sorted = _sorted
         return _sorted
     
+    '''
+    Järjestää listan `array` O(n log n)
+    tehokkuudella lomitusjärjestämisellä
+    '''
+    def mergeSort(self):
+        _sorted = self._sorted
+        temp = [None] * len(self._sorted)
+
+        def merge(a1, b1, a2, b2):
+            # Luodaan lista, jossa `_sorted`
+            # määrä None elementtejä, jotta voidaan
+            # käyttää listaa kuin tavallisessa ohjelmoinnissa
+            a = a1
+            b = b1
+            for i in range(a, b):
+                if a2 > b2 or (a1 <= b1 and _sorted[a1] <= _sorted[a2]):
+                    temp[i] = _sorted[a1]
+                    a1 += 1
+                else:
+                    temp[i] = _sorted[a2]
+                    a2 += 1
+            for i in range(a, b):
+                _sorted[i] = temp[i]
+
+        def sort(a, b):
+            if a == b:
+                return
+            else:
+                x = int((a+b)/2)
+                sort(a, x)
+                sort(x+1, b)
+                merge(a, x, x+1, b)
+        
+        sort(0, len(_sorted)-1)
+
+        return _sorted
+    
     def printNums(self):
         print("Alkuperäiset numerot:", self.array)
         print("Järjestetyt numerot:", self._sorted)
