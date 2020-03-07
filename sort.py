@@ -18,7 +18,6 @@ class Sort:
     '''
     def insertionSort(self):
         _sorted = self._sorted
-
         for index in range(len(_sorted)):
             leftIndex = index-1
             while leftIndex >= 0 and _sorted[leftIndex] > _sorted[leftIndex+1]:
@@ -74,7 +73,6 @@ class Sort:
                 elif leftIndex == len(leftList):
                     _merged += rightList[rightIndex:]
                     break
-            print(_merged)
             return _merged
 
         '''
