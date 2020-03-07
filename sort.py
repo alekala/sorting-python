@@ -2,7 +2,8 @@
 
 '''
 Erilaisia järjestämisalgoritmejä,
-järjestää muodostimen `array`
+järjestää muodostimen `array` luokan
+muuttujaan `_sorted`
 '''
 class Sort:
     def __init__(self, array):
@@ -17,13 +18,14 @@ class Sort:
     '''
     def insertionSort(self):
         _sorted = self._sorted
-        for i in range(len(_sorted)):
-            j = i-1
-            while j >= 0 and _sorted[j] > _sorted[j+1]:
-                temp = _sorted[j]
-                _sorted[j] = _sorted[j+1]
-                _sorted[j+1] = temp
-                j -= 1
+
+        for index in range(len(_sorted)):
+            leftIndex = index-1
+            while leftIndex >= 0 and _sorted[leftIndex] > _sorted[leftIndex+1]:
+                temp = _sorted[leftIndex]
+                _sorted[leftIndex] = _sorted[leftIndex+1]
+                _sorted[leftIndex+1] = temp
+                leftIndex -= 1
         self._sorted = _sorted
         return _sorted
     
@@ -33,32 +35,61 @@ class Sort:
     '''
     def mergeSort(self):
         _sorted = self._sorted
-        # Luodaan lista, jossa `_sorted`
-        # määrä None elementtejä, jotta voidaan
-        # käyttää listaa kuin tavallisessa ohjelmoinnissa
-        temp = [None] * len(self._sorted)
 
-        def merge(a1, b1, a2, b2):
-            a, b = a1, b2
-            for i in range(a, b):
-                if (a2 > b2) or (a1 <= b1 and _sorted[a1] <= _sorted[a2]):
-                    temp[i] = _sorted[a1]
-                    a1 += 1
-                else:
-                    temp[i] = _sorted[a2]
-                    a2 += 1
-            for i in range(a, b):
-                _sorted[i] = temp[i]
+        '''
+        Jakaa listan `inputList`
+        osiksi kunnes listoissa yksi alkio
+        '''
+        def split(inputList):
+            listLength = len(inputList)
+            middlePoint = listLength // 2
+            return inputList[:middlePoint], inputList[middlePoint:]
 
-        def sort(leftIndex, rightIndex):
-            if leftIndex == rightIndex:
-                return
-            x = (leftIndex+rightIndex)//2
-            sort(leftIndex, x)
-            sort(x+1, rightIndex)
-            merge(leftIndex, x, x+1, rightIndex)
+        '''
+        Kasaa sekä järjestää
+        listat `leftList` ja `rightList`
+        '''
+        def merge(leftList, rightList):
+            if len(leftList) == 0:
+                return leftList
+            elif len(rightList) == 0:
+                return rightList
         
-        sort(0, len(_sorted)-1)
+            leftIndex = 0
+            rightIndex = 0
+            _merged = []
+            targetLength = len(leftList) + len(rightList)
+
+            while len(_merged) < targetLength:
+                if leftList[leftIndex] <= rightList[rightIndex]:
+                    _merged.append(leftList[leftIndex])
+                    leftIndex += 1
+                else:
+                    _merged.append(rightList[rightIndex])
+                    rightIndex += 1
+
+                if rightIndex == len(rightList):
+                    _merged += leftList[leftIndex:]
+                    break
+                elif leftIndex == len(leftList):
+                    _merged += rightList[rightIndex:]
+                    break
+            print(_merged)
+            return _merged
+
+        '''
+        Kutsuu funktioita `split`
+        ja `merge`, kunnes lista `_sorted`
+        on järjestetty
+        '''
+        def sort(inputList):
+            if len(inputList) <= 1:
+                return inputList
+            left, right = split(inputList)
+            return merge(sort(left), sort(right))
+        
+        _sorted = sort(self._sorted)
+        self._sorted = _sorted
         return _sorted
     
     def printNums(self):

@@ -14,7 +14,6 @@ def genNums(count):
     return numbers
 
 sorter = Sort(genNums(10))
-# sorter = Sort([0, 4, 8, 2, 7, 9, 1, 2, 0, 2])
 # sortedArray = sorter.insertionSort()
-# sortedArray = sorter.mergeSort()
+sortedArray = sorter.mergeSort()
 sorter.printNums()
