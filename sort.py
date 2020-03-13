@@ -46,7 +46,8 @@ class Sort:
 
         '''
         Kasaa sekä järjestää
-        listat `leftList` ja `rightList`
+        listat `leftList` ja `rightList`,
+        palauttaa listat yhdistettynä
         '''
         def merge(leftList, rightList):
             if len(leftList) == 0:
