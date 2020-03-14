@@ -15,5 +15,6 @@ def genNums(count):
 
 sorter = Sort(genNums(10))
 # sortedArray = sorter.insertionSort()
-sortedArray = sorter.mergeSort()
+# sortedArray = sorter.mergeSort()
+sortedArray = sorter.quickSort()
 sorter.printNums()

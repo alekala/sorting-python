@@ -39,7 +39,7 @@ class Sort:
         Jakaa listan `inputList`
         osiksi kunnes listoissa yksi alkio
         '''
-        def split(inputList):
+        def __split(inputList):
             listLength = len(inputList)
             middlePoint = listLength // 2
             return inputList[:middlePoint], inputList[middlePoint:]
@@ -49,7 +49,7 @@ class Sort:
         listat `leftList` ja `rightList`,
         palauttaa listat yhdistettynä
         '''
-        def merge(leftList, rightList):
+        def __merge(leftList, rightList):
             if len(leftList) == 0:
                 return leftList
             elif len(rightList) == 0:
@@ -81,16 +81,61 @@ class Sort:
         ja `merge`, kunnes lista `_sorted`
         on järjestetty
         '''
-        def sort(inputList):
+        def __sort(inputList):
             if len(inputList) <= 1:
                 return inputList
-            left, right = split(inputList)
-            return merge(sort(left), sort(right))
+            left, right = __split(inputList)
+            return __merge(__sort(left), __sort(right))
         
-        _sorted = sort(self._sorted)
+        _sorted = __sort(self._sorted)
         self._sorted = _sorted
         return _sorted
     
+    '''
+    Järjestää listan `array`
+    parhaassa tapauksessa tehokkuudella
+    O(n log n) ja huonoimmassa tapauksessa
+    tehokkuudella O(n^2)
+    '''
+    def quickSort(self):
+        _sorted = self._sorted
+
+        '''
+        Jakaa listan `inputList` pienempiin
+        osiin ja järjestää listan siirtämällä
+        osan pivotin oikealle puolelle
+        '''
+        def __partition(inputList, start, end):
+            pivot = inputList[start]
+            low = start + 1
+            high = end
+
+            while True:
+                while low <= high and inputList[high] >= pivot:
+                    high -= 1
+                
+                while low <= high and inputList[low] <= pivot:
+                    low += 1
+                
+                if low <= high:
+                    inputList[low], inputList[high] = inputList[high], inputList[low]
+                else:
+                    break
+            
+            inputList[start], inputList[high] = inputList[high], inputList[start]
+            return high
+        
+        def __sort(inputList, start, end):
+            if start >= end:
+                return
+            part = __partition(inputList, start, end)
+            __sort(inputList, start, part-1)
+            __sort(inputList, part+1, end)
+        
+        __sort(_sorted, 0, len(_sorted)-1)
+        self._sorted = _sorted
+        return _sorted
+
     def printNums(self):
         print("Alkuperäiset numerot:", self.array)
         print("Järjestetyt numerot:", self._sorted)
